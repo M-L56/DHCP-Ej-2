@@ -24,17 +24,20 @@ Vagrant.configure("2") do |config|
   
   config.vm.define "c1" do |c1|
     c1.vm.box = "debian/bookworm64"
-    c1.vm.network "private_network", 
-      :mac => "5CA1AB1E0001",
+    c1.vm.network "private_network",
+      #:mac => "5CA1AB1E0001",
+      auto_config: false,
       virtualbox__intnet: true
+    c1.vm.provision "shell", inline: "dhclient eth1"
   end #Client
 
   config.vm.define "c2" do |c2|
     c2.vm.box = "debian/bookworm64"
     c2.vm.network "private_network",
-      :mac => "5CA1AB1E0002",
-      auto_config: true,
+      mac:"5CA1AB1E0001",
+      auto_config: false,
       virtualbox__intnet: true
+    c2.vm.provision "shell", inline: "dhclient eth1"
   end #Client
 
   
